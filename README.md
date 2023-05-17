@@ -1,9 +1,7 @@
 #### - new trainings -
 # Training repository  
     
-    <br/>
-    <br/>
-    
+        
 #### early 2015-2016
 # -
 tip, link, site - mix$

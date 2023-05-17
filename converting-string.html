@@ -1,0 +1,191 @@
+<section>
+    <div>
+        <pre>
+    #   numRows = 4
+    //      0   1   2   3
+    //0     J   -   -   A   -> 2
+    //1     P   -   G   N   -> 3
+    //2     M   R   -   I   -> 3
+    //3     O   -   -   S   -> 2
+        </pre>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("Start");
+
+        /*
+        // IN: JPMORGANISHIRING, numRows = 3
+
+        // J   R   I   R
+        // P O G N S I I G
+        // M   A   H   N
+
+        // OUT: JRIRPOGNSIIGMAHN
+
+
+        // IN: JPMORGANISHIRING, numRows = 4
+
+        // J     A     R
+        // P   G N   I I
+        // M R   I H   N
+        // O     S     G
+
+        // OUT: JARPGNIIMRIHNOSG
+
+        string convert(string s, int numRows);
+
+        # 
+        //  0 1 2 3 4 5 6
+        //0 J     A     R
+        //1 P   G N   I I
+        //2 M R   I H   N
+        //3 O     S     G
+
+            0 % 0 -> NaN -> !NaN - true
+            ROW
+            !(0 % 4) - true
+            !(1 % 4) - false
+            !(2 % 4) - false
+            !(3 % 4) - false
+            !(4 % 4) - true
+
+            COL
+            !(0 % 1) - true
+            !(0 % 2) - true
+            !(0 % 3) - true
+            !(0 % 4) - true
+
+            !(1 % 0) - true
+            !(1 % 1) - true
+            !(1 % 2) - false
+            !(1 % 3) - false
+            !(1 % 4) - false
+        */
+
+        function convert(s, numRows) {
+            console.log(s, numRows);
+            let result = "";
+            // 4: 1, 2, 3, 4
+            let position = numRows;
+            let matrix = [];
+            for (let z = 0; z < numRows; z++) {
+                matrix.push([]);
+            }
+
+            let direction = "down";
+            let dataObject = { r: 0, c: 0 };
+            var testArr = [];
+            let row = 0;
+            let col = 0;
+            for (let i = 0; i < s.length; i++) {
+                const letter = s[i];
+                let newObject = Object.assign({}, dataObject)
+                newObject.l = letter;
+                newObject.r = row;
+                newObject.c = col;
+                
+                if (direction == "down") {
+                    row += 1;
+                } else if (direction == "up") {
+                    row -= 1;
+                    col++;
+                }
+                
+                if (matrix.length - 1 == row) {
+                    direction = "up";
+                }
+
+                if (0 == row) {
+                    direction = "down";
+                }
+
+                dataObject = newObject;
+                testArr.push(newObject);
+            }
+
+            testArr.forEach(element => {
+                const { r, c, l } = element;
+                matrix[r][c] = l;
+            });
+
+            console.log(matrix);
+
+            for (let index = 0; index < matrix.length; index++) {
+                const innerArray = matrix[index];
+                console.log(innerArray, innerArray.join(""));
+                result += innerArray.join("");
+            }
+
+            return result;
+        };
+
+        const test1 = "JPMORGANISHIRING";
+        const test1N = 3;
+
+        console.log(convert(test1, test1N));        
+
+        /*
+                            j: 0
+        k: 0    j % k: NaN
+        k: 1    j % k: 0
+        k: 2    j % k: 0
+        k: 3    j % k: 0
+        training.html:118   j: 1
+        k: 0    j % k: NaN
+        k: 1    j % k: 0
+        k: 2    j % k: 1
+        k: 3    j % k: 1
+        training.html:118   j: 2
+        k: 0    j % k: NaN
+        k: 1    j % k: 0
+        k: 2    j % k: 0
+        k: 3    j % k: 2
+        training.html:118   j: 3
+        k: 0    j % k: NaN
+        k: 1    j % k: 0
+        k: 2    j % k: 1
+        k: 3    j % k: 0
+
+        #   numRows = 4
+        //      0   1   2   3
+        //0     J   -   -   A   -> 2    0v0 1x0 2x0 3v0     -> 0    (0 additional on position [4-1 = 3])
+        //1     P   -   G   N   -> 3    0v1 1x1 2v1 3v1     -> 1*2 (1 additional on position [3-1 = 2])
+        //2     M   R   -   I   -> 3    0v2 1v2 2x2 3v2     -> 1*1 (1 additional on position [2-1 = 1])
+        //3     O   -   -   S   -> 2    0v3 1x3 2x3 3v3     -> 0    (0 additional on position [1-1 = 0])
+
+        #   numRows = 3
+        //      0   1   2
+        //0     J   -   R
+        //1     P   O   G
+        //2     M   -   A
+
+        #   numRows = 5
+        //      0   1   2   3   4            V               V
+        //0     J   -   -   -   I   -> 2    0v0 1x0 2x0 3x0 4v0     -> 0    (0 additional on position [5-1 = 4])
+        //1     P   -   -   N   S   -> 3    0v1 1x1 2x1 3v1 4v1     -> 1*3 (1 additional on position [4-1 = 3])
+        //2     M   -   A   -   H   -> 3    0v2 1x2 2v2 3x2 4v2     -> 1*2 (1 additional on position [3-1 = 2])
+        //3     O   G   -   -   I   -> 3    0v3 1v3 2x3 3x3 4v3     -> 1*1 (1 additional on position [2-1 = 1])
+        //4     R   -   -   -   R   -> 2    0v4 1x4 2x4 3x4 4v4     -> 0    (0 additional on position [1-1 = 0])
+
+        #   numRows = 1     1 - 2 -> -1
+        #   empty = 0
+
+        #   numRows = 2     2 - 2 -> 0
+        #   empty = 0
+
+        #   numRows = 3     3 - 2 -> 1
+        #   empty = 1
+
+        #   numRows = 4     4 - 2 -> 2
+        #   empty = 2
+
+        #   numRows = 5     5 - 2 -> 3
+        #   empty = 3
+        */
+
+    }, 0);
+
+
+</script>

@@ -1,3 +1,7 @@
+## -new trainings-
+# Training repository
+
+## early 2015-2016
 # -
 tip, link, site - mix$
 

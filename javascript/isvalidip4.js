@@ -9,6 +9,16 @@ function isValidIP(str) {
   }
 
   for (const item of entries) {
+    const changedN = item | 0;
+    const itemLen = item.length;
+    if ((changedN / 10 < 1 && itemLen == 2) || (changedN / 100 < 1 && itemLen == 3)) {
+        return false;
+    }
+
+    if (itemLen == 0) {
+        return false;
+    }
+    
     if (item.indexOf(" ") != -1) {
       return false;
     }
